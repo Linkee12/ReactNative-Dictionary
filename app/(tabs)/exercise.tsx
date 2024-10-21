@@ -1,13 +1,14 @@
 import { Link } from "expo-router";
+import React from "react";
 import { View } from "react-native";
 
-export default function Exercise(){
+export default function AddWords(){
     return (<View
     style={{
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor:"red"
+      backgroundColor:"green"
     }}
   >
     <Link href="/">main</Link>
