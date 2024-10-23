@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TextInput, View, Text } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, View, Text, Platform } from "react-native";
 import Button from "../Button";
 
 export default function AddWords() {
@@ -7,7 +7,7 @@ export default function AddWords() {
   const [hunText, onChangeHunText] = React.useState('');
   return (<View
     style={styles.container}>
-    (
+
     <SafeAreaView>
       <Text style={styles.text}>Add words</Text>
       <TextInput
@@ -28,8 +28,8 @@ export default function AddWords() {
         <Button label={"Translate"} />
         <Button label={"Get example"} />
       </View>
-    </SafeAreaView>s
-    );
+    </SafeAreaView>
+
   </View>)
 }
 
@@ -52,12 +52,15 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(32,35,42)"
   },
   text: {
-    fontFamily: "Roboto",
     fontWeight: 700,
     fontSize: 36,
     textAlign: "center",
     padding: 16,
     color: "#517b7e",
+    fontFamily: Platform.select({
+      android: 'Inter_900Black',
+      ios: 'Inter-Black'
+    })
   },
   buttonContainer: {
     flex: 1,
