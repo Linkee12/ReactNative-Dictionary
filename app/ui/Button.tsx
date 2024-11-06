@@ -2,9 +2,10 @@ import { StyleSheet, View, Pressable, Text } from 'react-native';
 
 type Props = {
     label: string;
+    onPress:()=>void;
 };
 
-export default function Button({ label }: Props) {
+export default function Button({ label, onPress }: Props) {
     return (
         <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={() => alert('You pressed a button.')}>
@@ -16,20 +17,15 @@ export default function Button({ label }: Props) {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: "auto",
-        height: 50,
-        marginHorizontal: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: 3,
+        display:"flex",
+        height:40,
     },
     button: {
         borderRadius: 10,
-        width: 111,
-        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'row',
+        flex:1,
         backgroundColor: "#9d573b",
     },
     buttonIcon: {
