@@ -28,8 +28,24 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font",
-      "expo-font"
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/SpaceMono-Regular.ttf"
+          ]
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./assets/fonts",
+            "./assets/images",
+            "./assets/dictionary.db"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -1,117 +1,156 @@
-import React from "react";
-import { StyleSheet, TextInput, View, Text, Platform, FlatList } from "react-native";
-import Button from "../ui/Button";
-import ListItem from "../ui/ListItem";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from 'react-native-reanimated';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  Image,
+} from 'react-native';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
-export default function AddWords() {
-  const [engText, onChangeEngText] = React.useState('');
-  const [hunText, onChangeHunText] = React.useState('');
-  const startHeight = useSharedValue(0);
+export default function DictionaryScreen() {
+  const [hungarianWord, setHungarianWord] = useState('');
+  const [englishWord, setEnglishWord] = useState('');
+  const [examples, setExamples] = useState<string[]>([
+    "A kutya ugat. - The dog barks.",
+    "Kérem a számlát. - I'd like the bill, please.",
+    "Jó napot kívánok! - Good day!",
+    "Szeretlek. - I love you.",
+    "Hol van a legközelebbi metróállomás? - Where is the nearest metro station?",
+  ]);
 
-  const config = {
-    duration: 500,
-    easing: Easing.bezier(0.5, 0.01, 0, 1),
+  const handleTranslate = () => {
+    console.log('Translate button pressed');
   };
 
-  const listStyle = useAnimatedStyle(() => {
-    return {
-      width: withTiming(startHeight.value, config),
-    };
-  });
+  const handleSave = () => {
+    console.log('Save button pressed');
+  };
 
-  return (<View
-    style={styles.container}>
+  return (
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+      >
+        <Image
+          source={{ uri: 'https://placehold.co/200x50' }}
+          style={styles.logo}
+          accessibilityLabel="Modern Dictionary Logo"
+        />
+        <Text style={styles.title}>Modern Dictionary</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Hungarian word"
+            placeholderTextColor="#888"
+            value={hungarianWord}
+            onChangeText={setHungarianWord}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter English word"
+            placeholderTextColor="#888"
+            value={englishWord}
+            onChangeText={setEnglishWord}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <MaterialIcons name="save" size={24} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ ...styles.button, flex: 1 }} onPress={handleTranslate}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 10, justifyContent: "center" }}>
+              <AntDesign name="swap" size={24} color="#000" />
+              <Text style={{ fontSize: 17, paddingTop: 4 }}>Translate</Text>
+            </View>
 
-    <SafeAreaView style={{flex:1}} >
-      <Text style={styles.text}>Add words</Text>
-      <View style={{gap:10}}><TextInput
-        style={styles.input}
-        onChangeText={onChangeEngText}
-        value={engText}
-        autoCapitalize="sentences"
-        placeholder="English"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeHunText}
-        value={hunText}
-        autoCapitalize="sentences"
-        placeholder="Hungary"
-      />
-      <View style={styles.buttonContainer}>
-        <Button label={"Translate"} onPress={()=>{}}/>
-        <Button label={"Get example"} 
-          onPress={() => startHeight.value =350}/>
-      </View></View>
-      <Text style={{color: "#517b7e",fontWeight:600,fontSize:16}}>Example sentences: </Text>
-      <View style={styles.list}>
-      <FlatList
-        data={[
-          {key: 'Devin'},
-          {key: 'Dan'},
-          {key: 'Dominic'},
-          {key: 'Jackson'},
-          {key: 'James'},
-          {key: 'Joel'},
-          {key: 'John'},
-          {key: 'Jillian'},
-          {key: 'Jimmy'},
-          {key: 'Julie'},
-        ]}
-        renderItem={({item}) => <ListItem text={item.key}/>}
-        style={listStyle}
-      />
-    </View>
+
+          </TouchableOpacity>
+
+        </View>
+        <Text style={styles.examplesTitle}>Example Sentences:</Text>
+        <FlatList
+          data={examples}
+          renderItem={({ item }) => <Text style={styles.exampleItem}>{item}</Text>}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.exampleList}
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
-
-  </View>)
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "stretch",
-    gap:10,
-    backgroundColor: "black",
-    padding:15,
+    backgroundColor: '#121212',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  logo: {
+    width: 200,
+    height: 50,
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
+    color: '#fff',
+  },
+  inputContainer: {
+    paddingHorizontal: 20,
   },
   input: {
-    borderColor: "gray",
-    borderWidth: 1,
+    backgroundColor: '#333',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     borderRadius: 10,
-    padding: 10,
-    color: "white",
-    backgroundColor: "rgb(32,35,42)"
-  },
-  text: {
-    fontWeight: 700,
-    fontSize: 36,
-    textAlign: "center",
-    padding: 16,
-    color: "#517b7e",
-    fontFamily: Platform.select({
-      android: 'Inter_900Black',
-      ios: 'Inter-Black'
-    })
+    marginBottom: 10,
+    fontSize: 16,
+    color: '#fff',
   },
   buttonContainer: {
-    flex: 1,
-    marginBottom:20,
-  },
-  listItem:{
-    color:"rgb(255,255,255)"
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginVertical: 20,
+    gap: 20,
+    marginHorizontal: 20,
 
   },
-  list:{
-    flex:4
-  }
-})
+  button: {
+    backgroundColor: '#BB86FC',
+    padding: 15,
+    borderRadius: 15,
+  },
+  examplesTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    color: '#fff',
+  },
+  exampleList: {
+    paddingHorizontal: 20,
+  },
+  exampleItem: {
+    backgroundColor: '#333',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    color: '#fff',
+  },
+});
+

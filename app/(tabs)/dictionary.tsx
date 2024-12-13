@@ -4,10 +4,11 @@ import Animated, {
   useAnimatedStyle,
   Easing,
 } from 'react-native-reanimated';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet, FlatList } from 'react-native';
+import ListItem from '../ui/ListItem';
 
 export default function dictionary() {
-  const randomWidth = useSharedValue(10);
+  const randomWidth = useSharedValue(0);
 
   const config = {
     duration: 500,
@@ -16,18 +17,27 @@ export default function dictionary() {
 
   const style = useAnimatedStyle(() => {
     return {
-      width: withTiming(randomWidth.value, config),
+      height: withTiming(randomWidth.value, config),
     };
   });
 
   return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.box, style]} />
-      <Button
-        title="toggle"
-        onPress={() => {
-          randomWidth.value = Math.random() * 350;
-        }}
+<View style={styles.list}>
+      <FlatList
+        data={[
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie'},
+        ]}
+        renderItem={({item}) => <ListItem text={item.key}/>}
+        style={listStyle}
       />
     </View>
   );
@@ -45,4 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     margin: 30,
   },
-});
+  list:{
+    flex:4
+  },
+    listItem:{
+    color:"rgb(255,255,255)",
+}});

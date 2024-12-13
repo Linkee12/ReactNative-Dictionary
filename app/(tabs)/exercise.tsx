@@ -1,31 +1,72 @@
-import { Link } from "expo-router";
-import React from "react";
-import { View, StyleSheet} from "react-native";
-import Button from "../ui/Button";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDecay,
+} from 'react-native-reanimated';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
+import Card from '../ui/Card';
+import { SQLiteProvider, } from 'expo-sqlite';
+import migrateDbIfNeeded from '../schema/dbSchema';
 
-export default function AddWords(){
-    return (
-      <View style={style.container}>
-        <View style={style.card}></View>
-        <View style={style.menu}>
-          <Button label={"Remove"}></Button>
-        </View>
-      </View>
-    )
+
+
+
+export default function exercise() {
+  const offset = useSharedValue(0);
+  const width = useSharedValue(0);
+  const pan = Gesture.Pan()
+    .onChange((event) => {
+      offset.value += event.changeX;
+    })
+
+    .onFinalize((event) => {
+      if (event.translationX < -39) { console.log("words") }
+      else if (event.translationX > 39) { console.log("words") }
+      offset.value = withDecay({
+        velocity: event.velocityX,
+        rubberBandEffect: true,
+        clamp: [-(width.value), width.value],
+      });
+    });
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
+
+
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <Animated.View style={[animatedStyles, styles.cardContainer]}>
+        <GestureDetector gesture={pan}>
+          <Animated.View style={[styles.cardWrapper, animatedStyles]}>
+            <SQLiteProvider databaseName="dictionary.db" onInit={migrateDbIfNeeded}>
+              <Card word={"asd"} />
+            </SQLiteProvider>
+          </Animated.View>
+        </GestureDetector>
+
+      </Animated.View>
+    </GestureHandlerRootView>
+  );
 }
 
-const style=StyleSheet.create({
-  container:{
-    backgroundColor:"#000",
-    flexDirection:"column",
-    flex:1,
-  }
-  ,
-  card:{
-    backgroundColor:"#517b7e",
-    flex:1,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
   },
-  menu:{
-    height:40,
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-})
+  cardWrapper: {
+    position: 'absolute',
+  },
+});
