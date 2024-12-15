@@ -18,6 +18,7 @@ import migrateDbIfNeeded from '../schema/dbSchema';
 
 
 export default function exercise() {
+  const [trigger, setTrigger] = useState(0)
   const offset = useSharedValue(0);
   const width = useSharedValue(0);
   const pan = Gesture.Pan()
@@ -26,8 +27,8 @@ export default function exercise() {
     })
 
     .onFinalize((event) => {
-      if (event.translationX < -39) { console.log("words") }
-      else if (event.translationX > 39) { console.log("words") }
+      if (event.translationX < -39) { trigger < 0 ? setTrigger((trigger) => --trigger) : setTrigger(-1) }
+      else if (event.translationX > 39) { trigger > 0 ? setTrigger((trigger) => ++trigger) : setTrigger(+1) }
       offset.value = withDecay({
         velocity: event.velocityX,
         rubberBandEffect: true,
@@ -46,7 +47,7 @@ export default function exercise() {
         <GestureDetector gesture={pan}>
           <Animated.View style={[styles.cardWrapper, animatedStyles]}>
             <SQLiteProvider databaseName="dictionary.db" onInit={migrateDbIfNeeded}>
-              <Card word={"asd"} />
+              <Card trigger={trigger} />
             </SQLiteProvider>
           </Animated.View>
         </GestureDetector>
