@@ -7,22 +7,57 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "scheme": "your-app-scheme",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kalmoo.Dictionary"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "androidStatusBar": {
+        "backgroundColor": "#121212",
+        "barStyle": "light-content"
+      },
+      "package": "com.kalmoo.Dictionary"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e1a8438b-33e5-4f45-8c78-b080c0986c15"
+      }
     }
   }
 }
