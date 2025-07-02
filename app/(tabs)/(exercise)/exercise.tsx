@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import Animated, {
   runOnJS,
@@ -44,7 +44,7 @@ export default function exercise() {
 
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function setup() {
       try {
         const result = await db.getAllAsync<Words>('SELECT * FROM words')
@@ -59,7 +59,6 @@ export default function exercise() {
     }
     setup();
   }, [refresh, isFocused]);
-
   useAnimatedReaction(
     () => directionShared.value,
     (cur, prev) => {
@@ -132,7 +131,7 @@ export default function exercise() {
       <Animated.View style={[animatedStyles, styles.cardContainer]}>
         <GestureDetector gesture={pan}>
           <Animated.View style={[styles.cardWrapper, animatedStyles]}>
-            <Card wordPair={wordPair} />
+            <Card wordPair={wordPair} settings={firstLang ?? "hun"} />
           </Animated.View>
         </GestureDetector>
       </Animated.View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ export default function DictionaryScreen() {
   const [hungarianWord, setHungarianWord] = useState('');
   const [englishWord, setEnglishWord] = useState('');
   const [examples, setExamples] = useState<string[]>([]);
+
 
   const handleTranslate = () => {
     Toast.show({

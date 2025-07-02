@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Picker } from '@react-native-picker/picker';
 import { useSQLiteContext } from "expo-sqlite";
+import { Picker } from '@react-native-picker/picker';
 export default function AddWords() {
 
   type Settings = {
@@ -16,25 +16,26 @@ export default function AddWords() {
 
   async function setup(value: string) {
     try {
-      const result = await db.getAllAsync<Settings>('UPDATE settings SET value = ? WHERE id = ?', value, '0')
-      console.log("done :)")
+      await db.runAsync('UPDATE settings SET value = ? WHERE id = ?', [value, '1']);
+      const rows = await db.getAllAsync<Settings>('SELECT * FROM settings');
     } catch (err) {
       console.log("Error:" + err)
     }
   }
   return (<View style={styles.container} >
-    <View style={styles.line}>
+    <View style={styles.column}>
       <Text style={styles.text}>
         First word:
       </Text>
       <Picker
         style={styles.dropDrown}
+        dropdownIconColor="#fff"
         mode="dropdown"
         selectedValue={selectedLanguage}
         onValueChange={async (itemValue, itemIndex) => {
           if (itemValue === undefined) return
           setSelectedLanguage(itemValue)
-          setup(itemValue)
+          await setup(itemValue)
         }
         }>
         <Picker.Item label="Hungary" value="hun" />
@@ -57,15 +58,22 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: "#33B074",
+    color: "#fff",
   },
   dropDrown: {
-    backgroundColor: "131B19",
-    color: "#33B074",
-    width: "50%"
+    backgroundColor: "#121212",
+    color: "#fff",
+    width: "50%",
+
   },
-  line: {
-    flexDirection: "row",
+  column: {
+    flexDirection: "column",
     gap: 6,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderBlockColor: "#fff",
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
   }
 })

@@ -1,36 +1,39 @@
 import { useSQLiteContext } from 'expo-sqlite';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.8;
 const CARD_HEIGHT = Dimensions.get('window').height * 0.6;
 
 type CardProps = {
-    wordPair: Words
+    wordPair: Words,
+    settings: string
 }
 type Words = {
     id: number,
     hun: string,
     eng: string,
 }
-type Settings = {
-    id: number,
-    value: string,
-}
-
 
 const Card = (props: CardProps) => {
+    const getInitialLang = () => {
+        if (props.settings === "hun" || props.settings === "eng") return props.settings;
+        if (props.settings === "random") return Math.random() < 0.51 ? "hun" : "eng";
+        return "hun";
+    };
 
-    const [lang, setLang] = useState<'hun' | 'eng'>("hun");
-    const word = props.wordPair[lang]
+    const [lang, setLang] = useState<"hun" | "eng">(getInitialLang());
+
+    useEffect(() => {
+        setLang(getInitialLang());
+    }, [props.settings, props.wordPair.eng]);
     return (
-        <TouchableWithoutFeedback onPress={() => setLang(l => l === 'eng' ? 'hun' : 'eng')}>
+        <Pressable onPress={() => setLang(p => p === 'eng' ? 'hun' : 'eng')}>
             <View style={styles.card}>
-                <Text style={styles.text}>{word}</Text>
+                <Text style={styles.text}>{props.wordPair[lang]}</Text>
             </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
     );
 };
 
