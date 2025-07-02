@@ -10,7 +10,7 @@ export default async function migrateDbIfNeeded(db: SQLiteDatabase) {
         if (currentDbVersion >= DATABASE_VERSION) {
             return;
         }
-        if (currentDbVersion === 1) {
+        if (currentDbVersion === 2) {
             await db.execAsync('PRAGMA journal_mode = "wal"');
             await db.execAsync(`
                 CREATE TABLE IF NOT EXISTS words (

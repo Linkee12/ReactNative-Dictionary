@@ -1,4 +1,3 @@
-import { useSQLiteContext } from 'expo-sqlite';
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 

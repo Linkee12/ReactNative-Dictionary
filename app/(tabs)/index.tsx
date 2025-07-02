@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { useSQLiteContext } from 'expo-sqlite';
 import Toast from 'react-native-toast-message';
 import toastConfig from '../model/toastConfig';
-import Logo from "../../assets/logo.svg";
+import Logo from "../../assets/images/logo.svg";
 
 export default function DictionaryScreen() {
 
