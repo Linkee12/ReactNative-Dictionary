@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StyleSheet, Text, UIManager, View } from "react-native";
 
 export default function App() {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />

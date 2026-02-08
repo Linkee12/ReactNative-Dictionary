@@ -1,21 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
-import { useSQLiteContext } from "expo-sqlite";
 import Collection from "../ui/Collection";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function DictionaryScreen() {
   const example = ["almsadasd", "asdasd", "asdfas", "asdfggh", "asdfaf"];
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
-      <ScrollView>
-        {
-          example.map((value, idx) => <Collection key={idx} id={idx} name={value} />)
+      <View style={styles.header} />
 
-        } </ScrollView>
-      <Pressable style={styles.addButton} onPress={() => { throw new Error("Function not implemented."); }}>
-        <Text style={{ fontSize: 30 }}>+</Text>
+      <ScrollView
+        style={styles.collectionContainer}
+        contentContainerStyle={styles.collectionContent}
+      >
+        {example.map((value, idx) => (
+          <Collection key={idx} id={idx} name={value} />
+        ))}
+      </ScrollView>
+
+      <Pressable
+        style={styles.addButton}
+        onPress={() => {
+          throw new Error("Function not implemented.");
+        }}
+      >
+        <Text style={styles.addButtonText}>+</Text>
       </Pressable>
     </View>
   );
@@ -28,26 +38,35 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-
   header: {
     height: 100,
   },
-  text: {
-    color: "#FFA057",
+
+  collectionContainer: {
+    flex: 1,
   },
+
+  collectionContent: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingBottom: 80,
+  },
+
   addButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     right: 20,
     width: 50,
     height: 50,
-    display: "flex",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: "#2e71bdff",
     borderRadius: 5,
-    fontSize: 10,
-  }
+  },
+
+  addButtonText: {
+    fontSize: 30,
+    color: "white",
+  },
 });
-
-
