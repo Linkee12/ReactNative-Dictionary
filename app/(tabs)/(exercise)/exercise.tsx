@@ -137,7 +137,7 @@ export default function exercise() {
       </Animated.View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttons} onPress={async () => { deleteWord(words[wordIdx].id) }}>
+        <TouchableOpacity style={styles.buttons} onPress={async () => { deleteWord(words[wordIdx]?.id) }}>
           <MaterialCommunityIcons name="delete-forever" size={50} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity

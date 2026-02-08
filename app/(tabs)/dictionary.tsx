@@ -5,7 +5,7 @@ import {
   Easing,
 } from 'react-native-reanimated';
 import { View, StyleSheet, FlatList } from 'react-native';
-import ListItem from '../ui/ListItem';
+import ListItem from '../ui/Collection';
 import { useEffect, useState } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 
