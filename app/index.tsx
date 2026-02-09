@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
-import Collection from "../ui/Collection";
+import Collection from "./ui/Collection";
 import { ScrollView } from "react-native-gesture-handler";
+import AddCollectionModal from "./ui/addCollectionModal";
 
-export default function DictionaryScreen() {
-  const example = ["almsadasd", "asdasd", "asdfas", "asdfggh", "asdfaf"];
+export default function HomeScreen() {
+  const [example, setExample] = useState<string[]>([
+    "almsadasd",
+    "asdasd",
+    "asdfas",
+    "asdfggh",
+    "asdfaf",
+  ]);
+
+  const [showAddCollection, setShowAddCollection] = useState<boolean>(false);
 
   return (
     <View style={styles.container}>
@@ -19,18 +28,23 @@ export default function DictionaryScreen() {
         ))}
       </ScrollView>
 
+      <AddCollectionModal
+        visible={showAddCollection}
+        onClose={() => setShowAddCollection(false)}
+        onAdd={(name) => {
+          setExample((prev) => [...prev, name]);
+        }}
+      />
+
       <Pressable
         style={styles.addButton}
-        onPress={() => {
-          throw new Error("Function not implemented.");
-        }}
+        onPress={() => setShowAddCollection(true)}
       >
         <Text style={styles.addButtonText}>+</Text>
       </Pressable>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -39,7 +53,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    height: 100,
+    height: 30,
   },
 
   collectionContainer: {
@@ -55,14 +69,14 @@ const styles = StyleSheet.create({
 
   addButton: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
-    width: 50,
-    height: 50,
+    bottom: 40,
+    right: 30,
+    width: 60,
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#2e71bdff",
-    borderRadius: 5,
+    borderRadius: 14,
   },
 
   addButtonText: {
