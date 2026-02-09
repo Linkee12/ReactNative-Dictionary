@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
-import Collection from "./ui/Collection";
 import { ScrollView } from "react-native-gesture-handler";
 import AddCollectionModal from "./ui/addCollectionModal";
+import { CollectionType, DbService } from "./services/dbService";
+import Collection from "./ui/Collection";
+import { useSQLiteContext } from "expo-sqlite";
 
 export default function HomeScreen() {
-  const [example, setExample] = useState<string[]>([
-    "almsadasd",
-    "asdasd",
-    "asdfas",
-    "asdfggh",
-    "asdfaf",
-  ]);
+  const db = useSQLiteContext();
+  const dbService = new DbService(db);
 
+  const [collections, setCollections] = useState<CollectionType[]>([]);
   const [showAddCollection, setShowAddCollection] = useState<boolean>(false);
+
+  const loadCollections = async () => {
+    const result = await dbService.getCollections();
+    setCollections(result);
+  };
+
+  useEffect(() => {
+    loadCollections();
+  }, []);
+
+  const handleAddCollection = async (name: string) => {
+    await dbService.addCollection(name);
+    await loadCollections();
+  };
 
   return (
     <View style={styles.container}>
@@ -23,17 +35,15 @@ export default function HomeScreen() {
         style={styles.collectionContainer}
         contentContainerStyle={styles.collectionContent}
       >
-        {example.map((value, idx) => (
-          <Collection key={idx} id={idx} name={value} />
+        {collections.map((col) => (
+          <Collection key={col.id} id={col.id} name={col.name} />
         ))}
       </ScrollView>
 
       <AddCollectionModal
         visible={showAddCollection}
         onClose={() => setShowAddCollection(false)}
-        onAdd={(name) => {
-          setExample((prev) => [...prev, name]);
-        }}
+        onAdd={handleAddCollection}
       />
 
       <Pressable
@@ -45,6 +55,7 @@ export default function HomeScreen() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
